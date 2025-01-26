@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Automotive Professionals</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Sans:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Nunito', sans-serif;
@@ -48,15 +48,25 @@
             font-size: 24px;
             margin-bottom: 20px;
             color: #FFFFFF;
+            font-family: 'Ubuntu Sans', sans-serif;
         }
-        .logo {
-            width: 100%;
-            max-width: 150px;
-            height: auto;
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             margin-bottom: 20px;
         }
+
+        .logo {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+        }
+
         .link {
-            display: block;
+            display: flex; /* Use flexbox for alignment */
+            justify-content: center; /* Horizontally center content */
+            align-items: center; /* Vertically center content */
             margin: 10px 0;
             padding: 15px;
             background: #1DB954;
@@ -64,10 +74,14 @@
             text-decoration: none;
             border-radius: 5px;
             transition: background 0.3s ease;
+            font-size: 16px; /* Adjust font size */
+            font-weight: bold; /* Make text bold for better visibility */
         }
+
         .link:hover {
             background: #1AA34A;
         }
+
         .image-link {
             display: block;
             margin: 10px 0;
@@ -97,106 +111,57 @@
 <body>
     <div id="background"></div>
     <div class="container">
-        <h1>Automotive Professionals</h1>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
-          <rect width="800" height="300" fill="#1A1A1A" rx="20" />
-          <defs>
-            <linearGradient id="metallic" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#4A4A4A" />
-              <stop offset="50%" stopColor="#8A8A8A" />
-              <stop offset="100%" stopColor="#4A4A4A" />
-            </linearGradient>
-            <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#3498db" />
-              <stop offset="100%" stopColor="#2980b9" />
-            </linearGradient>
-          </defs>
-          <text
-            x="50"
-            y="130"
-            fontFamily="'Orbitron', sans-serif"
-            fontSize="72"
-            fontWeight="700"
-            fill="url(#metallic)"
-            letterSpacing="2"
-          >
-            AUTOMOTIVE
-          </text>
-          <text
-            x="50"
-            y="210"
-            fontFamily="'Rajdhani', sans-serif"
-            fontSize="84"
-            fontWeight="700"
-            fill="url(#accent)"
-            letterSpacing="3"
-          >
-            PROFESSIONALS
-          </text>
-          <path d="M 30,230 H 770" stroke="url(#accent)" strokeWidth="3" />
-          <path d="M 30,235 H 770" stroke="#e74c3c" strokeWidth="2" />
-          <path d="M 720,40 Q 750,40 750,60 T 780,80" fill="none" stroke="#e74c3c" strokeWidth="2" />
-          <path d="M 700,60 Q 730,60 730,80 T 760,100" fill="none" stroke="url(#accent)" strokeWidth="2" />
-    
-          <text
-            x="50"
-            y="275"
-            fontFamily="'Exo 2', sans-serif"
-            fontSize="22"
-            fontWeight="500"
-            fill="#FFFFFF"
-            letterSpacing="1"
-          >
-            COLLISION • ELECTRICAL • DIAGNOSTICS • TUNE UPS
-          </text>
-          <circle cx="35" cy="35" r="8" fill="#e74c3c" />
-          <circle cx="765" cy="265" r="8" fill="url(#accent)" />
-        </svg>
+        <h1>AUTOMOTIVE PROFESSIONALS</h1>
         <div id="links"></div>
         <footer>© 2025 Automotive Professionals</footer>
-    </div>
-
+    </div>    
     <script>
-        // Render links dynamically as before
+        // Render links dynamically
         const links = [
-            { name: "Instagram", url: "https://www.instagram.com/automotive_professionals/" },
-            { name: "Google Maps", url: "https://maps.app.goo.gl/Nx1kKFTTx11x2Gqi6" },
-            { name: "Call Us!", url: "tel:+14169067780" }
+            {
+                name: "Instagram",
+                url: "https://www.instagram.com/automotive_professionals/",
+                icon: "https://img.icons8.com/ios-filled/50/FFFFFF/instagram-new--v1.png",
+            },
+            { name: "Google Maps", url: "https://maps.app.goo.gl/Nx1kKFTTx11x2Gqi6", icon: "https://img.icons8.com/ios-filled/50/FFFFFF/google-maps-new.png" },
+            { name: "Call Us!", url: "tel:+14169067780", icon: "https://img.icons8.com/ios-filled/50/FFFFFF/phone.png" },
         ];
-
+    
         const renderLinks = () => {
-            const linksContainer = document.getElementById('links');
-            links.forEach(link => {
-                if (link.image) {
-                    const a = document.createElement('a');
-                    a.href = link.url;
-                    a.className = 'image-link';
-                    a.target = '_blank';
-                    const img = document.createElement('img');
-                    img.src = link.image;
-                    img.alt = link.name;
+            const linksContainer = document.getElementById("links");
+            links.forEach((link) => {
+                const a = document.createElement("a");
+                a.href = link.url;
+                a.className = "link";
+                a.target = "_blank";
+                a.rel = "noopener noreferrer";
+                a.style.display = "flex"; // Display as flex to align icon and text
+                a.style.alignItems = "center";
+                a.style.textDecoration = "none";
+                a.style.marginBottom = "10px";
+    
+                // If an icon exists, render it beside the text
+                if (link.icon) {
+                    const img = document.createElement("img");
+                    img.src = link.icon;
+                    img.alt = `${link.name} Icon`;
+                    img.width = 24; // Adjust the size to fit beside text
+                    img.height = 24;
+                    img.style.marginRight = "8px"; // Add spacing between icon and text
                     a.appendChild(img);
-                    linksContainer.appendChild(a);
-                } else {
-                    const a = document.createElement('a');
-                    a.textContent = link.name;
-                    a.href = link.url;
-                    a.className = 'link';
-                    a.onclick = (e) => confirmLink(link.url, e);
-                    linksContainer.appendChild(a);
                 }
+    
+                // Add the link text
+                const text = document.createTextNode(link.name);
+                a.appendChild(text);
+    
+                linksContainer.appendChild(a);
             });
         };
-
-        const confirmLink = (url, event) => {
-            if (!url.startsWith('mailto:')) {
-                event.preventDefault();
-                const confirmed = confirm(`Do you want to open ${url} in a new tab?`);
-                if (confirmed) window.open(url, '_blank');
-            }
-        };
-
+    
         renderLinks();
     </script>
+    
+    
 </body>
 </html>
