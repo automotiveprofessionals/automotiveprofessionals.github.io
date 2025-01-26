@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magarvey Laboratories</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-color: #121212;
+            color: #FFFFFF;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 400px;
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px auto;
+        }
+        
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #FFFFFF;
+        }
+        .logo {
+            width: 100%;
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .link {
+            display: block;
+            margin: 10px 0;
+            padding: 15px;
+            background: #1DB954;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        .link:hover {
+            background: #1AA34A;
+        }
+        .image-link {
+            display: block;
+            margin: 10px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .image-link img {
+            width: 400px;
+            height: 55px;
+            display: block;
+            object-fit: contain;
+            object-position: center;
+            background-color: #fff;
+        }
+        .image-link:hover {
+            transform: scale(1.05);
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #B3B3B3;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="background"></canvas>
+    <div class="container">
+        <h1>Magarvey Laboratories</h1>
+        <img src="crow-logo.png" alt="Magarvey Laboratories Logo" class="logo">
+        <div id="links"></div>
+        <footer>© 2024 Magarvey Laboratories</footer>
+    </div>
+
+    <script>
+        // Background Animation
+        const canvas = document.getElementById('background');
+        const ctx = canvas.getContext('2d');
+
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const numPoints = 100;
+        const points = [];
+        let mouse = { x: width / 2, y: height / 2 };
+
+        for (let i = 0; i < numPoints; i++) {
+            points.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                radius: Math.random() * 2 + 1,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5
+            });
+        }
+
+        function drawBackground() {
+            ctx.fillStyle = '#121212';
+            ctx.fillRect(0, 0, width, height);
+        }
+
+        function drawPoints() {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            for (let point of points) {
+                ctx.beginPath();
+                ctx.arc(point.x, point.y, point.radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function drawLines() {
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i < points.length; i++) {
+                for (let j = i + 1; j < points.length; j++) {
+                    const dx = points[i].x - points[j].x;
+                    const dy = points[i].y - points[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.moveTo(points[i].x, points[i].y);
+                        ctx.lineTo(points[j].x, points[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function updatePoints() {
+            for (let point of points) {
+                const dx = mouse.x - point.x;
+                const dy = mouse.y - point.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 100) {
+                    const force = (100 - distance) / 100;
+                    point.vx += dx * force * 0.01;
+                    point.vy += dy * force * 0.01;
+                }
+
+                point.x += point.vx;
+                point.y += point.vy;
+
+                point.vx *= 0.95;
+                point.vy *= 0.95;
+
+                if (point.x < 0 || point.x > width) point.vx *= -1;
+                if (point.y < 0 || point.y > height) point.vy *= -1;
+            }
+        }
+
+        function animate() {
+            drawBackground();
+            updatePoints();
+            drawLines();
+            drawPoints();
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        });
+
+        // Handle mouse movement
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        // Your existing links code
+        const links = [
+            { name: "Google Scholar", url: "https://scholar.google.ca/citations?user=2K8dBGcAAAAJ&hl=en" },
+            { name: "Adapsyn Bioscience", url: "https://www.adapsyn.com/", image: "adapsyn.png" },
+            { name: "Inviand Sciences", url: "http://inviand.com", image: "inviand-logo-outline.png" },
+            { name: "Natural Product Toolkit", url: "https://magarveylab.ca/nptk" },
+            { name: "Contact Us", url: "mailto:keshav+contactus@magarveylab.ca" }
+        ];
+
+        const renderLinks = () => {
+            const linksContainer = document.getElementById('links');
+            links.forEach(link => {
+                if (link.image) {
+                    const a = document.createElement('a');
+                    a.href = link.url;
+                    a.className = 'image-link';
+                    a.target = '_blank';
+                    const img = document.createElement('img');
+                    img.src = link.image;
+                    img.alt = link.name;
+                    a.appendChild(img);
+                    linksContainer.appendChild(a);
+                } else {
+                    const a = document.createElement('a');
+                    a.textContent = link.name;
+                    a.href = link.url;
+                    a.className = 'link';
+                    a.onclick = (e) => confirmLink(link.url, e);
+                    linksContainer.appendChild(a);
+                }
+            });
+        };
+
+        const confirmLink = (url, event) => {
+            if (!url.startsWith('mailto:')) {
+                event.preventDefault();
+                const confirmed = confirm(`Do you want to open ${url} in a new tab?`);
+                if (confirmed) window.open(url, '_blank');
+            }
+        };
+
+        renderLinks();
+    </script>
+</body>
+</html>
